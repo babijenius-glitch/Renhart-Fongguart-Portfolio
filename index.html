@@ -835,6 +835,13 @@ footer{border-top:1px solid var(--border);padding-block:32px;background:var(--bg
     .about-grid{ align-items:stretch; }
     .about-content{ display:flex; flex-direction:column; justify-content:center; }
     .about-content .section-title{ margin-bottom:20px; }
+    /* Photo fills its stretched column so the picture matches the sheet's height
+       (two-column layout only; single-column mobile keeps the 4/5 aspect ratio) */
+    @media (min-width:861px){
+      .about-photo-wrap{ display:flex; flex-direction:column; }
+      .about-photo-wrap > .lqip{ flex:1 1 0; min-height:0; }
+      .about-photo{ height:100%; aspect-ratio:auto; }
+    }
     .about-bio{ text-align:justify; text-justify:inter-word; hyphens:auto; }
     @media (max-width:640px){ .about-bio{ text-align:left; hyphens:none; } }
     .about-highlights{
