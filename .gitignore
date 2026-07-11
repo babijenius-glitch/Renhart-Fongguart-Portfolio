@@ -8,6 +8,9 @@ Portfolio Renhart Fongguart/
 /hero_renhart.png
 /photo-renhart.png
 
+# Python
+__pycache__/
+
 # OS
 Thumbs.db
 .DS_Store
