@@ -1,0 +1,16 @@
+# Backups and scratch
+*.bak*
+bak-optimize/
+Portfolio Renhart Fongguart/
+
+# Unoptimized source images (optimized .webp versions live in images/ and works/images/)
+/experience_renhart.png
+/hero_renhart.png
+/photo-renhart.png
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Claude Code internal
+.claude/
