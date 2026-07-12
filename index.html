@@ -918,6 +918,54 @@ footer{border-top:1px solid var(--border);padding-block:32px;background:var(--bg
     .js .lqip>img{ opacity:0; transition:opacity .55s ease; }
     .js .lqip.loaded>img{ opacity:1; }
 
+
+    /* ════════════════════════
+       POLISH PASS — drafting motion + micro-UX (additive)
+       ════════════════════════ */
+
+    /* CAD-marquee keyboard focus + blueprint text selection */
+    :focus-visible{ outline:1px dashed var(--accent); outline-offset:3px; }
+    .btn-secondary:focus-visible, .nav-cta:focus-visible, .form-submit:focus-visible{ outline-color:var(--cta); }
+    ::selection{ background:var(--accent); color:var(--bg-base); }
+
+    /* honors marquee: hold still while being read */
+    #award-banner:hover .award-scroll{ animation-play-state:paused; }
+
+    /* project card hover: mirror the top-left registration tick bottom-right */
+    .proj-card::after{
+      content:""; position:absolute; bottom:8px; right:8px; width:11px; height:11px;
+      border-bottom:2px solid var(--accent); border-right:2px solid var(--accent);
+      opacity:0; transition:opacity .2s ease; z-index:3; pointer-events:none;
+    }
+    .proj-card:hover::after{ opacity:.9; }
+
+    /* section label: closing dash that draws in like a dimension line on reveal */
+    .section-label::after{ content:""; width:26px; height:1px; background:var(--accent); }
+    .js .section-header.reveal .section-label::after{
+      transform:scaleX(0); transform-origin:left; transition:transform .5s var(--ease-out) .15s;
+    }
+    .js .section-header.reveal.visible .section-label::after{ transform:scaleX(1); }
+
+    /* hero: one-time load-in cascade (markup keeps `visible`, so no-JS shows instantly) */
+    @keyframes hero-rise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+    .js #hero .hero-content .reveal{ animation:hero-rise .55s var(--ease-out) both; }
+    .js #hero .hero-content .reveal-delay-1{ animation-delay:.07s; }
+    .js #hero .hero-content .reveal-delay-2{ animation-delay:.14s; }
+    .js #hero .hero-content .reveal-delay-3{ animation-delay:.21s; }
+    .js #hero .hero-content .reveal-delay-4{ animation-delay:.28s; }
+
+    /* project filter: sheet-flip fade at grid level (JS toggles .is-filtering) */
+    .projects-bento{ transition:opacity .16s ease; }
+    .tier.is-filtering .projects-bento{ opacity:0; }
+
+    /* scrollspy: current section highlighted in the nav */
+    .nav-links li a.active-link{ color:var(--accent); }
+
+    @media (prefers-reduced-motion: reduce){
+      .section-label::after{ transform:none !important; }
+      #hero .hero-content .reveal{ animation:none !important; }
+    }
+
   </style>
 </head>
 
