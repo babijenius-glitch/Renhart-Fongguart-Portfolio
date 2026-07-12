@@ -61,15 +61,44 @@
     btn.addEventListener('click', function () {
       var cur = root.getAttribute('data-theme') || 'light';
       var mode = cur === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', mode);
+      var apply = function () {
+        root.setAttribute('data-theme', mode);
+        paint(mode);
+      };
       try { localStorage.setItem('plotmode', mode); } catch (e) {}
-      paint(mode);
+      /* crossfade between PAPER and BLUEPRINT where supported (the CSS
+         reduced-motion kill doesn't reach ::view-transition pseudos) */
+      if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.startViewTransition(apply);
+      } else {
+        apply();
+      }
     });
   }
 
+  /* ── Re-arm scroll reveals (self-healing: admin saves bake `visible` in) ──
+     Below-the-fold elements lose the baked class and animate in via the
+     page's own IntersectionObserver; in-view elements stay put (no flash). */
+  function armReveals() {
+    var els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function (el) {
+      if (el.getBoundingClientRect().top > window.innerHeight - 40) {
+        el.classList.remove('visible');
+      }
+      io.observe(el);
+    });
+  }
+
+  function init() { build(); armReveals(); }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', build);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    build();
+    init();
   }
 })();
