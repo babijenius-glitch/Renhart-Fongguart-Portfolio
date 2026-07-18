@@ -31,8 +31,8 @@ WEBP_QUALITY = 85             # mobile / mid tiers — kept lean for slow connec
 # Top ("sharp desktop") tier: encode at the HIGHEST quality that stays near the
 # target; only step down to keep big images ~in range. Files may exceed the
 # target when the source is rich (high resolution + detail preserved).
-TOP_QUALITY_TRY  = (94, 90, 86, 82)
-TOP_TARGET_BYTES = 420 * 1024
+TOP_QUALITY_TRY  = (96, 94, 92, 90)
+TOP_TARGET_BYTES = 700 * 1024
 
 IMG_TAG_RE  = re.compile(rb'<img\b[^>]*>', re.IGNORECASE)
 SRC_RE      = re.compile(rb'\s*src="[^"]*"', re.IGNORECASE)
