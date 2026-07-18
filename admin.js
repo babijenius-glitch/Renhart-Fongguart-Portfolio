@@ -9,6 +9,9 @@
 
 (function initAdmin() {
 
+  /* ─── Local-only guard: admin mode never runs on the hosted site ─── */
+  if (!['localhost', '127.0.0.1', ''].includes(location.hostname)) return;
+
   /* ─── Config ─── */
   const STORAGE_KEY = 'portfolio_admin_edits';
   const PASSWORD    = 'renhart2025';

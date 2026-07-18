@@ -9,6 +9,9 @@
 
 (function () {
 
+  /* ─── Local-only guard: admin mode never runs on the hosted site ─── */
+  if (!['localhost', '127.0.0.1', ''].includes(location.hostname)) return;
+
   const PASSWORD = 'renhart2025';
   const PAGE_KEY = 'wa_' + location.pathname.replace(/[^\w]/g, '_');
 
