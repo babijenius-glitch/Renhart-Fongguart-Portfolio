@@ -12,7 +12,6 @@
   /* ─── Local-only guard: admin mode never runs on the hosted site ─── */
   if (!['localhost', '127.0.0.1', ''].includes(location.hostname)) return;
 
-  const PASSWORD = 'renhart2025';
   const PAGE_KEY = 'wa_' + location.pathname.replace(/[^\w]/g, '_');
 
   let active   = false;
@@ -118,18 +117,8 @@
     document.getElementById('wa-login-back').addEventListener('click', closeLogin);
 
     function tryLogin() {
-      if (inp.value === PASSWORD) {
-        closeLogin();
-        activate();
-      } else {
-        err.style.display = 'block';
-        inp.value = '';
-        inp.focus();
-        /* shake */
-        var box = modal.querySelector('.wa-login-box');
-        box.classList.add('wa-shake');
-        setTimeout(function () { box.classList.remove('wa-shake'); }, 500);
-      }
+      closeLogin();
+      activate();
     }
   }
 

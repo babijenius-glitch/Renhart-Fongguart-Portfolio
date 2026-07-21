@@ -14,7 +14,6 @@
 
   /* ─── Config ─── */
   const STORAGE_KEY = 'portfolio_admin_edits';
-  const PASSWORD    = 'renhart2025';
 
   /* ─── State ─── */
   let adminActive  = false;
@@ -33,17 +32,10 @@
       || document.activeElement?.isContentEditable;
     if (e.key === '1' && !isEditing && !e.ctrlKey && !e.metaKey && !e.altKey) {
       e.preventDefault();
-      adminActive ? deactivate() : promptLogin();
+      adminActive ? deactivate() : activate();
     }
     if (e.key === 'Escape' && adminActive) deactivate();
   });
-
-  /* ─── Login ─── */
-  function promptLogin() {
-    const pwd = prompt('🔐 Admin password:');
-    if (pwd === null) return;
-    pwd === PASSWORD ? activate() : showToast('❌ Wrong password', 'error');
-  }
 
   /* ════════════════════════════════════════════════════════
      ACTIVATE / DEACTIVATE

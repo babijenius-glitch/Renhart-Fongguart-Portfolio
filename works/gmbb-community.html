@@ -82,5 +82,6 @@
 </div></main>
 <script>document.querySelector('.yr').textContent=new Date().getFullYear();const obs=new IntersectionObserver(e=>e.forEach(i=>{if(i.isIntersecting){i.target.classList.add('visible');obs.unobserve(i.target);}}),{threshold:0.1});document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));</script>
 <script defer="" src="works-admin.js"></script>
+<script defer="" src="../analytics.js"></script>
 </body>
 </html>
