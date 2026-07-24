@@ -318,7 +318,8 @@ main > section, #contact, #about, #experience, #skills, #education, #projects{
 .proj-nav svg{width:13px;height:13px}
 .proj-nav:hover{background:var(--accent);border-color:var(--accent)}
 .proj-image:hover .proj-nav,.proj-image:focus-within .proj-nav{opacity:1}
-@media (hover:none){.proj-nav{opacity:.5}}
+/* Touch devices use swipe instead of the hover-only arrows */
+@media (hover:none){.proj-nav{display:none}}
 @media (prefers-reduced-motion: reduce){
   .proj-slider .proj-track{transition:none}
 }

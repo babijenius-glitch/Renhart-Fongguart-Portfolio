@@ -146,6 +146,42 @@
     wrap.addEventListener('mouseenter', () => { hovered = true; });
     wrap.addEventListener('mouseleave', () => { hovered = false; });
 
+    /* Touch swipe (mobile): drag the photo left/right to go next/prev.
+       Horizontal drags change the slide and suppress the card's link tap;
+       vertical drags fall through so the page still scrolls, and a plain
+       tap still opens the project page. */
+    let tsx = 0, tsy = 0, decided = false, horizontal = false, touching = false, holdTimer = null;
+    wrap.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      tsx = e.touches[0].clientX; tsy = e.touches[0].clientY;
+      decided = false; horizontal = false; touching = true;
+      hovered = true; clearTimeout(holdTimer); /* pause the beat while the finger is down */
+    }, { passive: true });
+    wrap.addEventListener('touchmove', (e) => {
+      if (!touching) return;
+      const dx = e.touches[0].clientX - tsx;
+      const dy = e.touches[0].clientY - tsy;
+      if (!decided && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        decided = true;
+        horizontal = Math.abs(dx) > Math.abs(dy);
+      }
+      if (decided && horizontal) e.preventDefault(); /* keep the page from scrolling mid-swipe */
+    }, { passive: false });
+    wrap.addEventListener('touchend', (e) => {
+      if (!touching) return;
+      touching = false;
+      const dx = e.changedTouches[0].clientX - tsx;
+      const dy = e.changedTouches[0].clientY - tsy;
+      if (horizontal && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) next(); else prev();
+        const kill = (ev) => { ev.preventDefault(); ev.stopPropagation(); };
+        card.addEventListener('click', kill, { capture: true, once: true });
+        setTimeout(() => card.removeEventListener('click', kill, { capture: true }), 500);
+      }
+      /* give the just-swiped photo a moment before the shared beat resumes */
+      holdTimer = setTimeout(() => { hovered = false; }, BEAT_MS);
+    }, { passive: true });
+
     return { next, isHovered: () => hovered };
   }
 
