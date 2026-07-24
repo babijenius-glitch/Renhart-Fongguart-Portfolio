@@ -620,7 +620,14 @@
     
     clone.querySelectorAll('[data-admin-original]').forEach(el => el.removeAttribute('data-admin-original'));
     clone.querySelectorAll('[data-admin-sel]').forEach(el => el.removeAttribute('data-admin-sel'));
-    
+
+    /* Strip thumb-rotator's injected nodes/classes (self-heals on next load) */
+    clone.querySelectorAll('[data-rotator]').forEach(el => el.remove());
+    clone.querySelectorAll('.proj-image.rotating').forEach(el => el.classList.remove('rotating'));
+    clone.querySelectorAll('.proj-image .lqip>img').forEach(img => {
+      img.removeAttribute('style');
+    });
+
     /* Send to server */
     const finalHtml = '<!DOCTYPE html>\n<html lang="en">\n' + clone.innerHTML + '\n</html>';
     

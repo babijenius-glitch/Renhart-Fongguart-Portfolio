@@ -276,13 +276,16 @@ main > section, #contact, #about, #experience, #skills, #education, #projects{
 
 /* ─── Projects: Filter ─── */
 #projects .section-header{margin-bottom:32px}
-.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:48px}
+.filter-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;margin-bottom:28px}
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px}
 .filter-btn{
   font-family:var(--font-mono);font-size:.76rem;letter-spacing:.03em;color:var(--text-md);
   border:1px solid var(--border-md);padding:9px 16px;transition:.2s ease;min-height:40px;
 }
 .filter-btn:hover{border-color:var(--accent);color:var(--text-hi)}
 .filter-btn.active{background:var(--text-hi);color:var(--bg-base);border-color:var(--text-hi)}
+.section-hint{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;color:var(--text-md);white-space:nowrap}
+.section-hint svg{width:13px;height:13px;flex-shrink:0;color:var(--accent)}
 
 /* ─── Projects: Tier ladder ─── */
 .tier{margin-bottom:56px}
@@ -299,9 +302,26 @@ main > section, #contact, #about, #experience, #skills, #education, #projects{
 }
 .proj-card:hover{border-color:var(--accent);transform:translateY(-3px)}
 .proj-card.proj-award{border-color:var(--border-hi)}
-.proj-image{aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--border)}
+.proj-image{aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--border);position:relative}
 .proj-image img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
 .proj-card:hover .proj-image img{transform:scale(1.04)}
+/* Sliding documentation carousel */
+.proj-image .proj-slider{position:absolute;inset:0;overflow:hidden;z-index:1}
+.proj-slider .proj-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1);will-change:transform}
+.proj-slider .proj-slide{flex:0 0 100%;width:100%;height:100%;object-fit:cover}
+.proj-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:26px;height:40px;display:grid;place-items:center;padding:0;cursor:pointer;
+  border:1px solid rgba(255,255,255,.3);background:rgba(15,17,21,.4);color:#fff;
+  opacity:0;transition:opacity .2s ease,background .2s ease,border-color .2s ease}
+.proj-nav.prev{left:6px}
+.proj-nav.next{right:6px}
+.proj-nav svg{width:13px;height:13px}
+.proj-nav:hover{background:var(--accent);border-color:var(--accent)}
+.proj-image:hover .proj-nav,.proj-image:focus-within .proj-nav{opacity:1}
+@media (hover:none){.proj-nav{opacity:.5}}
+@media (prefers-reduced-motion: reduce){
+  .proj-slider .proj-track{transition:none}
+}
 .proj-body{padding:20px}
 .proj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 .tag{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.05em;color:var(--accent);border:1px solid var(--accent-glow);background:var(--accent-glow2);padding:3px 9px}
@@ -795,7 +815,7 @@ footer{border-top:1px solid var(--border);padding-block:32px;background:var(--bg
       }
       .hero-inner{ padding-block:28px; }
       .section-header{ margin-bottom:26px; }
-      .filter-bar{ margin-bottom:28px; }
+      .filter-row{ margin-bottom:20px; }
       .tier{ margin-bottom:32px; }
       .tier-header{ margin-bottom:18px; }
     }
@@ -1148,15 +1168,18 @@ footer{border-top:1px solid var(--border);padding-block:32px;background:var(--bg
           <p class="section-subtitle">Construction management, BIM engineering, structural &amp; geotechnical design,
             bridge competition, research, and community work</p>
         </div>
-        <div aria-label="Filter projects by category" class="filter-bar reveal visible" role="group">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="construction-management">Construction Management</button>
-          <button class="filter-btn" data-filter="bim">BIM</button>
-          <button class="filter-btn" data-filter="structure">Structure</button>
-          <button class="filter-btn" data-filter="geotechnic">Geotechnic</button>
-          <button class="filter-btn" data-filter="competition">Competition</button>
-          <button class="filter-btn" data-filter="research">Research</button>
-          <button class="filter-btn" data-filter="other">Other</button>
+        <div class="filter-row reveal visible">
+          <div aria-label="Filter projects by category" class="filter-bar" role="group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="construction-management">Construction Management</button>
+            <button class="filter-btn" data-filter="bim">BIM</button>
+            <button class="filter-btn" data-filter="structure">Structure</button>
+            <button class="filter-btn" data-filter="geotechnic">Geotechnic</button>
+            <button class="filter-btn" data-filter="competition">Competition</button>
+            <button class="filter-btn" data-filter="research">Research</button>
+            <button class="filter-btn" data-filter="other">Other</button>
+          </div>
+          <p class="section-hint"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="7" x2="17" y1="7" y2="17"></line><polyline points="17 7 17 17 7 17"></polyline></svg>Click any card for the full project write-up</p>
         </div>
                 <div class="tier" data-tier="industry">
           <div class="tier-header">
@@ -2242,6 +2265,8 @@ footer{border-top:1px solid var(--border);padding-block:32px;background:var(--bg
     })();
 
   </script>
+  <!-- ─── Selected Work thumbnail rotation ──────────────── -->
+  <script defer="" src="thumb-rotator.js"></script>
   <!-- ─── Admin Mode ─────────────────────────────────────── -->
   <script defer="" src="admin.js"></script>
   <!-- ─── Visit analytics (GoatCounter, private) ─────────── -->
