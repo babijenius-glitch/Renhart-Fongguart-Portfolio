@@ -108,6 +108,7 @@
 
     let domIndex = 1; /* real cover slide */
     let animating = false;
+    let settleTimer = null;
 
     function apply(animate) {
       if (!animate) track.style.transition = 'none';
@@ -119,25 +120,33 @@
     }
     apply(false);
 
-    track.addEventListener('transitionend', (e) => {
-      if (e.target !== track || e.propertyName !== 'transform') return;
+    function settle() {
+      clearTimeout(settleTimer);
       animating = false;
       if (domIndex === N + 1) { domIndex = 1; apply(false); }
       else if (domIndex === 0) { domIndex = N; apply(false); }
+    }
+
+    track.addEventListener('transitionend', (e) => {
+      if (e.target !== track || e.propertyName !== 'transform') return;
+      settle();
     });
 
-    function next() {
+    function step(dir) {
       if (animating) return;
+      /* Skip hidden cards (e.g. filtered out): a display:none element fires
+         no transitionend, which would otherwise leave `animating` stuck. */
+      if (wrap.offsetParent === null) return;
       animating = true;
-      domIndex += 1;
+      domIndex += dir;
       apply(true);
+      /* Fallback in case transitionend never arrives (card hidden mid-slide,
+         or transition disabled by reduced-motion) so it can never freeze. */
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(settle, 700);
     }
-    function prev() {
-      if (animating) return;
-      animating = true;
-      domIndex -= 1;
-      apply(true);
-    }
+    function next() { step(1); }
+    function prev() { step(-1); }
 
     prevBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); prev(); });
     nextBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); next(); });
